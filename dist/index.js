@@ -132,12 +132,13 @@ async function minifyJsFile(filePath) {
     // @ts-expect-error - terser.error is not typed
     if (r.error)
         throw r.error;
-    r.code && (await fsp.writeFile(filePath, r.code, "utf8"));
+    if (r.code)
+        await fsp.writeFile(filePath, r.code, "utf8");
 }
 async function optimizeImage(filePath, quality = 80) {
     const ext = path.extname(filePath).toLowerCase();
     const input = await fsp.readFile(filePath);
-    let plugins = [];
+    const plugins = [];
     if (ext === ".jpg" || ext === ".jpeg") {
         plugins.push(imageminMozjpeg({ quality }));
     }

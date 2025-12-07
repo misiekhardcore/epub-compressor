@@ -37,7 +37,7 @@ async function run() {
   const [inPath, outPath] = argv._;
   if (!inPath || !outPath) {
     console.error(
-      "Usage: node epub-compress.js input.epub output.epub [--images] [--quality=75] [--level=9]"
+      "Usage: node epub-compress.js input.epub output.epub [--images] [--quality=75] [--level=9]",
     );
     process.exit(2);
   }
@@ -46,7 +46,7 @@ async function run() {
 
   const tmp = path.join(
     os.tmpdir(),
-    "epub-compress-" + crypto.randomBytes(6).toString("hex")
+    "epub-compress-" + crypto.randomBytes(6).toString("hex"),
   );
   await fsp.mkdir(tmp, { recursive: true });
 
@@ -83,7 +83,7 @@ async function extractTo(epubPath: string, outDir: string): Promise<void> {
 
 async function processFiles(
   root: string,
-  opts: { images: boolean; quality: number }
+  opts: { images: boolean; quality: number },
 ): Promise<void> {
   const entries = await walk(root);
   for (const filePath of entries) {
@@ -148,20 +148,20 @@ async function minifyJsFile(filePath: string): Promise<void> {
   const r = await terser(src, { compress: true, mangle: true });
   // @ts-expect-error - terser.error is not typed
   if (r.error) throw r.error;
-  r.code && (await fsp.writeFile(filePath, r.code, "utf8"));
+  if (r.code) await fsp.writeFile(filePath, r.code, "utf8");
 }
 
 async function optimizeImage(filePath: string, quality = 80): Promise<void> {
   const ext = path.extname(filePath).toLowerCase();
   const input = await fsp.readFile(filePath);
-  let plugins = [];
+  const plugins = [];
   if (ext === ".jpg" || ext === ".jpeg") {
     plugins.push(imageminMozjpeg({ quality }));
   } else if (ext === ".png") {
     plugins.push(
       imageminPngquant({
         quality: [Math.max(0.1, (quality - 30) / 100), quality / 100],
-      })
+      }),
     );
   } else {
     return;
@@ -184,7 +184,7 @@ async function minifySvg(filePath: string): Promise<void> {
 async function createEpub(
   dir: string,
   outPath: string,
-  opts = { level: 9 }
+  opts = { level: 9 },
 ): Promise<void> {
   // EPUB requires a file named "mimetype" as the first entry, stored with no compression.
   const mimePath = path.join(dir, "mimetype");
