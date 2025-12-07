@@ -1,0 +1,33 @@
+{
+  "name": "epub-compressor",
+  "packageManager": "yarn@4.12.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": "dist/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@types/archiver": "^7.0.0",
+    "@types/csso": "^5.0.4",
+    "@types/imagemin": "^9.0.1",
+    "@types/imagemin-mozjpeg": "^8.0.4",
+    "@types/unzipper": "^0.10.11",
+    "archiver": "^7.0.1",
+    "csso": "^5.0.5",
+    "html-minifier-terser": "^7.2.0",
+    "imagemin": "^9.0.1",
+    "imagemin-mozjpeg": "^10.0.0",
+    "imagemin-pngquant": "^10.0.0",
+    "minimist": "^1.2.8",
+    "terser": "^5.44.1",
+    "unzipper": "^0.12.3"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/html-minifier-terser": "^7.0.2",
+    "@types/minimist": "^1.2.5",
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3"
+  }
+}
